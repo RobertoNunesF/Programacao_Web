@@ -7,7 +7,14 @@ const getTrainerImagePath = (imagem) => {
   return `/trainers/${imagem}`;
 };
 
-export default function CardTime({ treinador, time, onRemovePokemon, trainerImages = [], onTrainerImageChange }) {
+export default function CardTime({
+  treinador,
+  time,
+  onRemovePokemon,
+  trainerImages = [],
+  onTrainerImageChange,
+  onDeleteTrainer,
+}) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const slots = Array.from({ length: 6 }, (_, index) => time[index] || null);
   const filledSlots = time.filter(Boolean).length;
@@ -18,6 +25,19 @@ export default function CardTime({ treinador, time, onRemovePokemon, trainerImag
   return (
     <div className="w-full max-w-2xl bg-slate-800 text-white border-4 border-slate-700 rounded-3xl shadow-2xl p-6 relative overflow-hidden font-sans">
       <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-slate-700/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      {typeof onDeleteTrainer === "function" && treinador?.id && (
+        <button
+          type="button"
+          onClick={() => {
+            if (confirm("Confirma excluir este treinador?")) onDeleteTrainer(treinador.id);
+          }}
+          title="Excluir treinador"
+          className="absolute top-3 right-3 bg-red-600 hover:bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center shadow"
+        >
+          🗑
+        </button>
+      )}
 
       <div className="text-center border-b-2 border-slate-700 pb-3 mb-4">
         <h2 className="text-2xl font-black tracking-wide text-yellow-400 uppercase">
