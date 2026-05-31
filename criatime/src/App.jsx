@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import CardTime from "./CardTime.jsx";
-import Titulo from "./Titulo";
+import { CardTime, Titulo } from "./components";
 
 const typeColors = {
   normal: "#A8A878",
