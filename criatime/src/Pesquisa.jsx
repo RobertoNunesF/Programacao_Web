@@ -21,6 +21,22 @@ function Pesquisa() {
     buscarTodosTimes();
   }, []);
 
+  async function excluirTreinador(id) {
+    try {
+      if (!confirm("Confirma exclusão deste treinador?")) return;
+      const resposta = await fetch(`http://localhost:3000/times/${id}`, { method: "DELETE" });
+      if (resposta.ok) {
+        setTimes((prev) => prev.filter((t) => t.id !== id));
+        alert("Treinador excluído com sucesso.");
+      } else {
+        alert("Erro ao excluir treinador.");
+      }
+    } catch (erro) {
+      console.error("Erro ao excluir:", erro);
+      alert("Erro ao conectar ao servidor.");
+    }
+  }
+
   async function pesquisaTimes(data) {
     try {
       const resposta = await fetch("http://localhost:3000/times");
@@ -44,7 +60,9 @@ function Pesquisa() {
     }
   }
 
-  const listaTimes = times.map((time) => <CardTime key={time.id} treinador={time} time={time.pokemons || []} />);
+  const listaTimes = times.map((time) => (
+    <CardTime key={time.id} treinador={time} time={time.pokemons || []} onDeleteTrainer={excluirTreinador} />
+  ));
 
   return (
     <>
