@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  --bug: #a6b91a;
+  --bug-border: #3d4409;
+  --dark: #705746;
+  --dark-border: #5c4033;
+  --dragon: #6f35fc;
+  --dragon-border: #2d1668;
+  --electric: #f7d02c;
+  --electric-border: #f5de00;
+  --fairy: #d685ad;
+  --fairy-border: #aa336a;
+  --fight: #c22e28;
+  --fight-border: #8d201c;
+  --fire: #ee8130;
+  --fire-border: #c61a09;
+  --flying: #a98ff3;
+  --flying-border: #705ea0;
+  --ghost: #735797;
+  --ghost-border: #48375e;
+  --grass: #7ac74c;
+  --grass-border: #013220;
+  --ground: #e2bf65;
+  --ground-border: #7e6a39;
+  --ice: #96d9d6;
+  --ice-border: #669290;
+  --normal: #a8a77a;
+  --normal-border: #7c7c5a;
+  --poison: #a33ea1;
+  --poison-border: #301934;
+  --psychic: #f95587;
+  --psychic-border: #370002;
+  --rock: #b6a136;
+  --rock-border: #584e19;
+  --steel: #b7b7ce;
+  --steel-border: #4c4c55;
+  --water: #6390f0;
+  --water-border: #00008b;
+}

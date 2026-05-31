@@ -1,0 +1,28 @@
+# Node
+node_modules/
+**/node_modules/
+# Build outputs
+dist/
+build/
+.vite/
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Env files
+.env
+.env.local
+# OS
+.DS_Store
+thumbs.db
+# Editor
+.vscode/
+.idea/
+# Misc
+coverage/
+*.log
+
+# Vite + React
+/criatime/dist/
+/criatime/node_modules/
+/api_pokedex/node_modules/
