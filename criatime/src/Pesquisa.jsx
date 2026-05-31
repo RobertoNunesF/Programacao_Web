@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
-import Titulo from "./Titulo";
 import { useEffect, useState } from "react";
-import CardTime from "./CardTime";
+import { Titulo, CardTime } from "./components";
 
 function Pesquisa() {
   const { register, handleSubmit } = useForm();

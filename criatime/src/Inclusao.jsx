@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import Titulo from "./Titulo";
+import { Titulo } from "./components";
 
 function Inclusao() {
   const { register, handleSubmit, reset } = useForm();
