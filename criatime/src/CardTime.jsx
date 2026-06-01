@@ -136,7 +136,7 @@ export default function CardTime({
 
       <div>
         <p className="text-xs text-slate-400 uppercase font-bold tracking-wider mb-2">Sua Equipe</p>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 justify-items-center">
           {slots.map((pokemon, index) => {
             if (pokemon) {
               const isAce = index === 0;

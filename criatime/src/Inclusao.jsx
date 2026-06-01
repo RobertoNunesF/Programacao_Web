@@ -27,12 +27,14 @@ function Inclusao() {
 
       if (resposta.ok) {
         const novoTime = await resposta.json();
-        // Salva o novo time como ativo
+        // Salva o novo time como ativo e envia para o Home
         localStorage.setItem("timeattivoId", novoTime.id);
+        localStorage.setItem("trainerData", JSON.stringify(novoTime));
+        localStorage.setItem("team", JSON.stringify(novoTime.pokemons || []));
         alert("Novo time criado com sucesso! Redirecionando...");
         reset();
-        // Redireciona para Home
-        navigate("/");
+        // Redireciona para Home com o novo treinador
+        navigate("/", { state: { novoTime } });
       } else {
         alert("Erro ao criar o novo time.");
       }
@@ -74,7 +76,7 @@ function Inclusao() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-bold text-gray-400 uppercase">Trainer ID</label>
                 <input

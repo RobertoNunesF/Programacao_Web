@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { CardTime, Titulo } from "./components";
 
 const typeColors = {
@@ -24,22 +25,6 @@ const typeColors = {
 };
 
 function App() {
-  const [pokemon, setPokemon] = useState([]);
-  const [team, setTeam] = useState([]);
-  const [termoBusca, setTermoBusca] = useState("");
-  const [imagemTreinador, setImagemTreinador] = useState([]);
-
-  const [treinador, setTreinador] = useState({
-    id: 1,
-    nome: "",
-    nomeTime: "",
-    genero: "Masculino",
-    classe: "Treinador",
-    trainerId: "",
-    imagem: "/trainers/red.png",
-    pokemons: [],
-  });
-
   const getTrainerImagePath = (imagem) => {
     if (!imagem) return "/trainers/red.png";
     if (imagem.startsWith("/trainers/")) return imagem;
@@ -47,23 +32,73 @@ function App() {
     return `/trainers/${imagem}`;
   };
 
-  useEffect(() => {
-    const timeattivoId = localStorage.getItem("timeattivoId") || "1";
-    const treinadorSalvo = localStorage.getItem("trainerData");
+  const location = useLocation();
+  const [pokemon, setPokemon] = useState([]);
+  const [termoBusca, setTermoBusca] = useState("");
+  const [imagemTreinador, setImagemTreinador] = useState([]);
 
-    if (treinadorSalvo) {
-      const dadosLocais = JSON.parse(treinadorSalvo);
-      if (String(dadosLocais.id) === String(timeattivoId)) {
-        setTreinador({ ...dadosLocais, imagem: getTrainerImagePath(dadosLocais.imagem) });
-        setTeam(dadosLocais.pokemons || []);
+  const [treinador, setTreinador] = useState(() => {
+    const novoTime = location.state?.novoTime;
+    if (novoTime) {
+      return { ...novoTime, imagem: getTrainerImagePath(novoTime.imagem) };
+    }
+    const stored = localStorage.getItem("trainerData");
+    const timeattivoId = localStorage.getItem("timeattivoId") || "1";
+
+    if (stored) {
+      try {
+        const dadosLocais = JSON.parse(stored);
+        if (String(dadosLocais.id) === String(timeattivoId)) {
+          return { ...dadosLocais, imagem: getTrainerImagePath(dadosLocais.imagem) };
+        }
+      } catch (error) {
+        console.error("Erro ao ler trainerData do localStorage:", error);
       }
     }
+
+    return {
+      id: 1,
+      nome: "",
+      nomeTime: "",
+      genero: "Masculino",
+      classe: "Treinador",
+      trainerId: "",
+      imagem: "/trainers/red.png",
+      pokemons: [],
+    };
+  });
+
+  const [team, setTeam] = useState(() => {
+    const novoTime = location.state?.novoTime;
+    if (novoTime) {
+      return novoTime.pokemons || [];
+    }
+    const stored = localStorage.getItem("trainerData");
+    if (stored) {
+      try {
+        const dadosLocais = JSON.parse(stored);
+        return dadosLocais.pokemons || [];
+      } catch (error) {
+        console.error("Erro ao ler team do localStorage:", error);
+      }
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    const timeattivoId = location.state?.novoTime?.id || localStorage.getItem("timeattivoId") || "1";
 
     async function carregarDadosIniciais() {
       try {
         const resPokemon = await fetch("http://localhost:3000/pokedex");
         const dadosPokemon = await resPokemon.json();
         setPokemon(dadosPokemon);
+
+        if (location.state?.novoTime) {
+          setTreinador({ ...location.state.novoTime, imagem: getTrainerImagePath(location.state.novoTime.imagem) });
+          setTeam(location.state.novoTime.pokemons || []);
+          return;
+        }
 
         const resTreinador = await fetch(`http://localhost:3000/times/${timeattivoId}`);
         if (resTreinador.ok) {
@@ -78,7 +113,7 @@ function App() {
       }
     }
     carregarDadosIniciais();
-  }, []);
+  }, [location.state]);
 
   useEffect(() => {
     async function carregarImagensTreinador() {
@@ -165,7 +200,7 @@ function App() {
     return (
       <div
         key={poke.number}
-        className="flex flex-col justify-center items-center p-4 text-white font-semibold rounded-2xl w-40 text-sm shadow-md transition-transform hover:-translate-y-1"
+        className="flex flex-col justify-center items-center p-4 text-white font-semibold rounded-2xl w-full max-w-40 text-sm shadow-md transition-transform hover:-translate-y-1"
         style={{ background }}
       >
         <p className="text-xs opacity-75">#{poke.number}</p>
@@ -193,10 +228,10 @@ function App() {
       <Titulo termoBusca={termoBusca} setTermoBusca={setTermoBusca} />
 
       <main className="flex flex-col items-center p-6 gap-8">
-        <section className="flex flex-col lg:flex-row gap-6 w-full max-w-6xl items-start justify-center">
+        <section className="flex flex-col md:flex-row gap-6 w-full max-w-6xl items-start justify-center">
           <form
             onSubmit={salvarTreinador}
-            className="w-full lg:w-1/3 bg-white p-5 rounded-2xl border border-gray-200 shadow-md flex flex-col gap-3"
+            className="w-full md:w-1/2 lg:w-1/3 bg-white p-5 rounded-2xl border border-gray-200 shadow-md flex flex-col gap-3"
           >
             <h3 className="font-bold text-slate-700 text-lg border-b pb-2 mb-1">Registro de Licença</h3>
 
@@ -224,7 +259,7 @@ function App() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div>
                 <label className="text-xs font-bold text-gray-400 uppercase">Trainer ID</label>
                 <input
@@ -268,7 +303,7 @@ function App() {
             </button>
           </form>
 
-          <div className="w-full lg:w-2/3 flex justify-center">
+          <div className="w-full md:w-1/2 lg:w-2/3 flex justify-center">
             <CardTime
               treinador={treinador}
               time={team}
@@ -282,7 +317,9 @@ function App() {
         <h2 className="font-extrabold text-xl text-slate-700 border-t w-full max-w-6xl pt-6 text-center tracking-wide uppercase">
           Escolha Seus Membros
         </h2>
-        <section className="flex gap-4 flex-wrap justify-center w-full max-w-6xl pb-12">{listaPokemon}</section>
+        <section className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-items-center w-full max-w-6xl pb-12">
+          {listaPokemon}
+        </section>
       </main>
     </div>
   );

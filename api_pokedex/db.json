@@ -958,6 +958,53 @@
       ],
       "id": 1,
       "imagem": "/trainers/red.png"
+    },
+    {
+      "nome": "Hope",
+      "nomeTime": "Toxic",
+      "trainerId": "00024",
+      "classe": "Treinador",
+      "genero": "Não-Binário",
+      "imagem": "/trainers/blue1.png",
+      "pokemons": [
+        {
+          "number": 3,
+          "name": "Venusaur",
+          "type1": "Grass",
+          "type2": "Poison"
+        },
+        {
+          "number": 34,
+          "name": "Nidoking",
+          "type1": "Poison",
+          "type2": "Ground"
+        },
+        {
+          "number": 42,
+          "name": "Golbat",
+          "type1": "Poison",
+          "type2": "Flying"
+        },
+        {
+          "number": 94,
+          "name": "Gengar",
+          "type1": "Ghost",
+          "type2": "Poison"
+        },
+        {
+          "number": 24,
+          "name": "Arbok",
+          "type1": "Poison",
+          "type2": ""
+        },
+        {
+          "number": 110,
+          "name": "Weezing",
+          "type1": "Poison",
+          "type2": ""
+        }
+      ],
+      "id": 2
     }
   ]
 }

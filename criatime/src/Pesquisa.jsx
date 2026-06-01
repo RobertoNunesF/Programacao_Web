@@ -18,7 +18,10 @@ function Pesquisa() {
   }
 
   useEffect(() => {
-    buscarTodosTimes();
+    async function carregar() {
+      await buscarTodosTimes();
+    }
+    carregar();
   }, []);
 
   async function excluirTreinador(id) {
@@ -67,23 +70,28 @@ function Pesquisa() {
   return (
     <>
       <Titulo />
-      <h2 className="text-2xl my-2 p-3 font-bold">Pesquisa de Times</h2>
-      <form className="text-center" onSubmit={handleSubmit(pesquisaTimes)}>
-        <input
-          type="text"
-          className="text-sm w-96 rounded-lg p-3 border border-gray-300 focus:outline-none focus:ring-4 focus:ring-violet-200"
-          required
-          placeholder="Palavra chave do título ou gênero"
-          {...register("pesquisa")}
-        />
-        <input
-          type="submit"
-          value="Pesquisar"
-          className="p-3 border-0 text-white text-sm font-bold cursor-pointer rounded-lg bg-violet-700 ml-2"
-        />
-      </form>
+      <div className="px-4">
+        <h2 className="text-2xl my-2 font-bold">Pesquisa de Times</h2>
+        <form
+          className="mx-auto flex flex-col items-center gap-3 max-w-3xl text-center"
+          onSubmit={handleSubmit(pesquisaTimes)}
+        >
+          <input
+            type="text"
+            className="text-sm w-full max-w-xl rounded-lg p-3 border border-gray-300 focus:outline-none focus:ring-4 focus:ring-violet-200"
+            required
+            placeholder="Palavra chave do título ou gênero"
+            {...register("pesquisa")}
+          />
+          <input
+            type="submit"
+            value="Pesquisar"
+            className="p-3 border-0 text-white text-sm font-bold cursor-pointer rounded-lg bg-violet-700 ml-2"
+          />
+        </form>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-3 p-3">{listaTimes}</section>
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-3 p-3">{listaTimes}</section>
+      </div>
     </>
   );
 }
